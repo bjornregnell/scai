@@ -1,4 +1,5 @@
-package neuronisc 
+package scai 
 
 @main def run =
-  println("hello")
+  val result = rnd()
+  println(s"hello scai\n  result = $result")
