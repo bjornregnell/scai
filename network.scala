@@ -4,6 +4,8 @@ class Network(layerSizes: Seq[Int] = Seq(3,2,1), nbrOfInputs: Int = 2):
 
   val inputs = new Array[Float](nbrOfInputs)
 
+  val nbrOfNeurons = layerSizes.sum
+
   val layers: Array[Array[Neuron]] = 
     val xss = new Array[Array[Neuron]](layerSizes.length)
     xss(0) = Array.fill(layerSizes(0))(InputNeuron(inputs))
