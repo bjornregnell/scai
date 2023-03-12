@@ -1,2 +1,2 @@
-# neuronisc
-Neural Network Playground in  Scala 3
+# scai
+Artificial Intelligence Playground in Scala 3.
