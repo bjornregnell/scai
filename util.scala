@@ -2,7 +2,7 @@ package scai
 
 val RNG = java.util.Random()
 
-/** Faster exp based on Teylor series. Error less than 0.001%  within [-1..+1] 
+/** Faster exp based on Taylor series. Error less than 0.001%  within [-1..+1] 
   * https://stackoverflow.com/a/10552567/10088022
   **/
 def exp(x: Float): Float = 
