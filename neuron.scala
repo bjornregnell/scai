@@ -34,6 +34,7 @@ class Neuron(layer: Int, index: Int, val inputs: Array[Float], val outputs: Arra
   /** Compute output value. The sigmoid call constrains output in [0..1] */ 
   def output(): Float = sigmoid(weights * inputs + bias)
 
+  /** Compute output and assign it to output cell */
   def forwardFeed(): Unit = outputs(index) = output()
   
   var savedBias: Float = bias
