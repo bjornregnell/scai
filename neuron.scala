@@ -1,20 +1,13 @@
 package scai
 
-def InputNeuron(inputs: Array[Float]): Neuron = Neuron(inputs: Array[Float], Array())
-
-def ConnectedNeuron(previousLayer: Array[Neuron]): Neuron =
-  new Neuron(new Array[Float](previousLayer.size), previousLayer)
-
-class Neuron(val inputs: Array[Float], val previousLayer: Array[Neuron]):
+class Neuron(layer: Int, index: Int, val inputs: Array[Float], val outputs: Array[Float]):
   def size = inputs.size
 
-  assert(previousLayer.size == 0 || previousLayer.size == size,
-    "size of inputs must match numer of neurons in previous layer")
-
   var bias: Float = gauss()
-  
+
   var weights: Array[Float] = Array.fill(size)(gauss())
 
+  /** Initiate this neuron to a random state. */
   def reset(): Unit =
     bias = gauss()
     var i = 0
@@ -22,47 +15,43 @@ class Neuron(val inputs: Array[Float], val previousLayer: Array[Neuron]):
       weights(i) = gauss()
       i += 1
   
+  /** Adjust the state according to delta. */
   def adjust(deltaBias: Float, deltaWeights: Array[Float]): Unit =
-    bias -= deltaBias
+    bias += deltaBias
     var i = 0
     while i < size do
-      weights(i) -= deltaWeights(i)
+      weights(i) += deltaWeights(i)
       i += 1
 
-  def mutate(factor: Float = 1.0): Unit = 
-    bias +=  factor * gauss()
+  /** Randomly adjust the state, scaled by learnFactor. */
+  def mutate(learnFactor: Float = 1.0): Unit = 
+    bias +=  learnFactor * gauss()
     var i = 0
     while i < size do 
-      weights(i) += factor * gauss()
+      weights(i) += learnFactor * gauss()
+      i += 1
+
+  /** Compute output value. The sigmoid call constrains output in [0..1] */ 
+  def output(): Float = sigmoid(weights * inputs + bias)
+
+  def forwardFeed(): Unit = outputs(index) = output()
+  
+  var savedBias: Float = bias
+
+  var savedWeights: Array[Float] = weights.clone()
+  
+  /** Forget current state and restore saved state */
+  def backtrack(): Unit = 
+    bias = savedBias
+    var i = 0
+    while i < size do 
+      weights(i) = savedWeights(i)
       i += 1
   
-  def output(): Float = sigmoid(weights * inputs + bias)
-  def outputDerived(): Float = sigmoidDerived(weights * inputs + bias)
-
-  def feed(): Unit = 
-    var i = 0
-    while i < previousLayer.size do
-      previousLayer(i).feed()
-      inputs(i) = previousLayer(i).output()
-      i += 1
-
-
-trait Memory:
-  self : Neuron =>
-
-  var oldBias: Float = bias
-  var oldWeights: Array[Float] = weights.clone()
-
-  def forget(): Unit =
-    bias = oldBias
+  /** Remember current state. */
+  def save(): Unit =
+    savedBias = bias
     var i = 0
     while i < size do 
-      weights(i) = oldWeights(i)
-      i += 1
-
-  def remember(): Unit =
-    oldBias = bias
-    var i = 0
-    while i < size do 
-      oldWeights(i) = weights(i)
+      savedWeights(i) = weights(i)
       i += 1
