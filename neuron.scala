@@ -23,19 +23,19 @@ class Neuron(layer: Int, index: Int, val inputs: Array[Float], val outputs: Arra
       weights(i) += deltaWeights(i)
       i += 1
 
-  /** Randomly adjust the state, scaled by learnFactor. */
-  def mutate(learnFactor: Float = 1.0): Unit = 
-    bias +=  learnFactor * gauss()
+  /** Randomly adjust the state, scaled by factor. */
+  def mutate(factor: Float = 1.0): Unit = 
+    bias +=  factor * gauss()
     var i = 0
     while i < size do 
-      weights(i) += learnFactor * gauss()
+      weights(i) += factor * gauss()
       i += 1
 
   /** Compute output value. The sigmoid call constrains output in [0..1] */ 
   def output(): Float = sigmoid(weights * inputs + bias)
 
   /** Compute output and assign it to output cell */
-  def forwardFeed(): Unit = outputs(index) = output()
+  def feedForward(): Unit = outputs(index) = output()
   
   var savedBias: Float = bias
 
@@ -56,3 +56,5 @@ class Neuron(layer: Int, index: Int, val inputs: Array[Float], val outputs: Arra
     while i < size do 
       savedWeights(i) = weights(i)
       i += 1
+  
+  def show: String = s"Neuron($layer,$index)=${outputs(index)}"
