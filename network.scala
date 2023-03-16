@@ -25,7 +25,7 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
       for index <- 0 until layerSizes(layer) do
         neurons(layer)(index).feedForward()
 
-  def predict(input: Seq[Float]): Seq[Float] =
+  def predict(input: Float*): Seq[Float] =
     assert(input.length == nbrOfInputs, s"in lengths must be $nbrOfInputs") 
     val it = input.iterator
     for i <- inputs.indices do inputs(i) = it.next
