@@ -25,12 +25,12 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
       for index <- 0 until layerSizes(layer) do
         neurons(layer)(index).feedForward()
 
-  def predict(input: Float*): Seq[Float] =
+  def predict(input: Array[Float]): Array[Float] =
     assert(input.length == nbrOfInputs, s"in lengths must be $nbrOfInputs") 
     val it = input.iterator
     for i <- inputs.indices do inputs(i) = it.next
     feedForward()
-    outputs(lastLayer).toSeq
+    outputs(lastLayer)
 
   def show: String = 
     val heading = s"Network(nbrOfInputs=$nbrOfInputs, layerSizes=$layerSizes):"
@@ -45,4 +45,12 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
 
     s"$heading\n$body\nOutput: ${outputs(lastLayer).mkString(",")}\n"
 
-  def train(iterations: Int, input: Array[Array[Float]], correctOutput: Array[Array[Float]]): Unit = ???
+  def train(iterations: Int, input: Array[Array[Float]], correctOutput: Array[Array[Float]]): Unit = 
+    var averageLoss = 0.0
+    var i = 0
+    while i < input.size do
+      val loss = meanSquareLoss(predict(input(i)), correctOutput(i))
+      i += 1
+      averageLoss += (loss - averageLoss)/i // https://en.wikipedia.org/wiki/Moving_average
+    
+    ???
