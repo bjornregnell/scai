@@ -24,7 +24,7 @@ class Neuron(layer: Int, index: Int, val inputs: Array[Float], val outputs: Arra
       i += 1
 
   /** Randomly adjust the state, scaled by factor. */
-  def mutate(factor: Float = 1.0): Unit = 
+  def mutate(factor: Float): Unit = 
     bias +=  factor * gauss()
     var i = 0
     while i < size do 

@@ -6,6 +6,11 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
   val outputs = new Array[Array[Float]](layerSizes.length)
   val neurons = new Array[Array[Neuron]](layerSizes.length)
 
+  def randomNeuron(): (Int, Int) = 
+    val layer = util.Random.nextInt(layerSizes.length)
+    val index = util.Random.nextInt(layerSizes(layer))
+    (layer, index)
+
   val nbrOfNeurons = layerSizes.sum
   val lastLayer = layerSizes.length - 1
   
@@ -19,7 +24,7 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
       else
         neurons(layer)(index) = new Neuron(layer, index, outputs(layer - 1), outputs(layer))
   
-  /** Walk through all neurons in all layers and forward outputs to next layer*/
+  /** Walk through all neurons in all layers and forward outputs to next layer */
   def feedForward() = 
     for layer <- 0 until layerSizes.length do
       for index <- 0 until layerSizes(layer) do
@@ -45,12 +50,45 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
 
     s"$heading\n$body\nOutput: ${outputs(lastLayer).mkString(",")}\n"
 
-  def train(iterations: Int, input: Array[Array[Float]], correctOutput: Array[Array[Float]]): Unit = 
-    var averageLoss = 0.0
+  def mutateRandomNeuron(learningFactor: Float): (Int, Int) = 
+    val (l, i) = randomNeuron()
+    neurons(l)(i).mutate(learningFactor)
+    (l, i)
+  
+
+  def train(iterations: Int, data: DataSet, learningFactor: Float = 0.3): Unit = 
+    def computeLoss(): Float = 
+      var averageLoss = 0F
+      var i = 0
+      while i < data.size do
+        val loss = meanSquareLoss(predict(data.inputs(i)), data.correctOutputs(i))
+        i += 1
+        averageLoss += (loss - averageLoss)/i // https://en.wikipedia.org/wiki/Moving_average
+      end while
+      averageLoss
+    end computeLoss
+
+    for epoch <- 1 to iterations do
+      val loss1 = computeLoss()
+      val (l, i) = mutateRandomNeuron(learningFactor)
+      val loss2 = computeLoss()
+      if epoch % (iterations / 10) == 0 then 
+        println(s"epoch $epoch loss before mutation: $loss1 --- after mutation: $loss2")
+      if loss2 < loss1
+      then neurons(l)(i).save() 
+      else neurons(l)(i).backtrack()
+
+  def test(data: DataSet): Float =
+    var averageLoss = 0F
     var i = 0
-    while i < input.size do
-      val loss = meanSquareLoss(predict(input(i)), correctOutput(i))
-      i += 1
+    while i < data.size do
+      val loss = meanSquareLoss(predict(data.inputs(i)), data.correctOutputs(i))
+      def interpret(xs: Array[Float]): String = if xs(0) > 0.5 then "Female" else "Male  "
+      println(
+        s"${data.inputs(i).mkString(",")} " +
+        s"correct=${interpret(data.correctOutputs(i))} ${data.correctOutputs(i).mkString(",")}  " +
+        s"predicted=${interpret(outputs(lastLayer))}  ${outputs(lastLayer).mkString(",")} loss=$loss") 
+      i += 1 
       averageLoss += (loss - averageLoss)/i // https://en.wikipedia.org/wiki/Moving_average
-    
-    ???
+    end while
+    averageLoss
