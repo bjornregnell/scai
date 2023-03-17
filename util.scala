@@ -10,9 +10,9 @@ def exp(x: Float): Float =
 
 /** S-shape sigmoid function https://en.wikipedia.org/wiki/Sigmoid_function **/
 inline def sigmoid(x: Float): Float = (1 / (1 + math.exp(-x.toDouble))).toFloat
+  //(1 / (1 + exp(x)))
 
 //https://towardsdatascience.com/derivative-of-the-sigmoid-function-536880cf918e
-
 inline def sigmoidDerived(x: Float): Float = 
   val sx = sigmoid(x) 
   sx * (1 - sx)
@@ -31,7 +31,7 @@ def dotProduct(xs: Array[Float], ys: Array[Float]): Float =
     i += 1
   result
 
-extension (xs: Array[Float]) inline def *(ys: Array[Float]) = dotProduct(xs, ys)
+extension (xs: Array[Float]) def *(ys: Array[Float]) = dotProduct(xs, ys)
 
 def meanSquareLoss(correct: Array[Float], predicted: Array[Float]): Float =
   var sumOfSquares: Float = 0.0F
