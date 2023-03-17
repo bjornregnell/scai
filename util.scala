@@ -2,15 +2,8 @@ package scai
 
 val RNG = java.util.Random()
 
-/** Faster exp based on Taylor series. Error less than 0.001%  within [-1..+1] 
-  * https://stackoverflow.com/a/10552567/10088022
-  **/
-def exp(x: Float): Float = 
-  (5040+x*(5040+x*(2520+x*(840+x*(210+x*(42+x*(7+x)))))))*0.00019841269F
-
 /** S-shape sigmoid function https://en.wikipedia.org/wiki/Sigmoid_function **/
 inline def sigmoid(x: Float): Float = (1 / (1 + math.exp(-x.toDouble))).toFloat
-  //(1 / (1 + exp(x)))
 
 //https://towardsdatascience.com/derivative-of-the-sigmoid-function-536880cf918e
 inline def sigmoidDerived(x: Float): Float = 
