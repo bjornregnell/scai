@@ -20,12 +20,11 @@ object DataSet:
     new DataSet(inputs.toSeq, correctOutputs.toSeq)
 
 val trainingDataFile = "training-data.txt"
-val testingDataFile = "testing-data.txt"
-
 val trainingData = 
   println(s"\n---TRAINING DATA from file $trainingDataFile")
   DataSet.fromFile(trainingDataFile)
 
+val testingDataFile = "testing-data.txt"
 val testingData = 
   println(s"---TESTING DATA  from file $testingDataFile")
   DataSet.fromFile(testingDataFile)
@@ -34,10 +33,8 @@ val network = Network(trainingData.inputs(0).length)
 
 def trainAndTest() =
   println(network.show)
-  
   println("\nTraining...")
   network.train(600,  data = trainingData)
-
   println("\nTesting...")
   val loss = network.test(testingData)
   println(s"Average loss in testing: $loss")  
