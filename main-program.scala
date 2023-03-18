@@ -1,40 +1,40 @@
-//> using scala "3.3.0-RC3"
+//> using scala "3.2.2"
 
-package scai 
+val welcomeMessage = "Welcome to AI SEX CLASSIFIER"
 
-class DataSet(name: String, val inputs: Seq[Vec], val correctOutputs: Seq[Vec]):
-  def size = inputs.size
-  override def toString = s"DataSet $name size: $size rows, first row length: ${inputs(0).length}]"
+val trainData = DataSet.fromFile("train-data.txt")
+val testData  = DataSet.fromFile("test-data.txt")
 
-object DataSet:
-  def fromFile(file: String, enc: String = "UTF-8"): DataSet =
-    val source = scala.io.Source.fromFile(file, enc)  // a source can read lines from a file
-    val inputs = List.empty[Vec].toBuffer // a buffer is a list that can grow
-    val correctOutputs = List.empty[Vec].toBuffer
-    for line <- source.getLines() do
-      val strings: Array[String] = line.split(":")
-      val is: Vec = strings(0).split(",").map(_.toDouble)
-      val os: Vec = strings(1).split(",").map(_.toDouble)
-      inputs.append(is)
-      correctOutputs.append(os)
-    end for
-    new DataSet(file, inputs.toSeq, correctOutputs.toSeq)
+def binaryClassifier(x: Num): String = 
+  if x > 0.5 
+  then "Female" 
+  else "Male  "
 
-val trainFile = "train-data.txt"
-val trainData = DataSet.fromFile(trainFile)
+val ai = new Network(inputSize = trainData.inputs(0).size, layerSizes = List(3,2,1))
 
-val testFile = "test-data.txt"
-val testData = DataSet.fromFile(testFile)
+def showColor(s: String, color: String): String = color + s + Console.RESET
 
-val network = Network(trainData.inputs(0).size)
+def test(data: DataSet): Unit =
+  for i <- data.inputs.indices do
+    val predicted = ai.predict(data.inputs(i))
+    val correct = data.correctOutputs(i)
+    val loss = meanSquareError(predicted, correct)
+    val showPredicted = 
+      if binaryClassifier(correct(0)) == binaryClassifier(predicted(0)) 
+      then showColor(binaryClassifier(predicted(0)), Console.GREEN)
+      else showColor(binaryClassifier(predicted(0)), Console.RED)
 
-def trainAndTest() =
-  println(network.show)
-  println(s"  Training with $trainFile")
-  network.train(600,  data = trainData)
-  println(s"  Testing with $testFile")
-  val loss = network.test(testData)
-  println(s"  Average loss in testing: $loss")  
+    println(
+      s"${data.inputs(i).mkString(",")} " +
+      s"correct=${binaryClassifier(correct(0))} ${correct.mkString(",")}  " +
+      s"predicted=$showPredicted  ${predicted.mkString(",")} loss=$loss") 
 
-@main def run = trainAndTest()
+@main def run = 
+  println(s"\n--- $welcomeMessage\n")
+  println(ai.show)
+  val n = 600
+  println(s"\n--- TRAINING in $n cycles")
+  ai.train(cycles = n,  data = trainData)
+  println(s"\n--- TESTING")
+  test(testData)
 

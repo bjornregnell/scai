@@ -1,5 +1,3 @@
-package scai
-
 /** A decimal number with double precision */
 type Num = Double
 

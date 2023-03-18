@@ -1,11 +1,9 @@
-package scai
-
-class Neuron(index: Int, val inputs: Vec, val outputs: Vec):
-  def size = inputs.size
+class Neuron(val input: Vec):
+  def show: String = s"Neuron[input.size=${input.size}]"
 
   var bias: Num = random()
 
-  var weights: Vec = Array.fill(size)(random())
+  var weights: Vec = Array.fill(input.size)(random())
 
   /** Initiate this neuron to a random state. */
   def reset(): Unit =
@@ -19,16 +17,13 @@ class Neuron(index: Int, val inputs: Vec, val outputs: Vec):
   def mutate(factor: Num): Unit = 
     bias +=  factor * random()
     var i = 0
-    while i < size do 
+    while i < input.size do 
       weights(i) += factor * random()
       i += 1
 
   /** Compute output value. The sigmoid call constrains output in [0..1] */ 
-  def output(): Num = sigmoid(multiply(weights, inputs) + bias)
+  def output(): Num = sigmoid(multiply(weights, input) + bias)
 
-  /** Compute output and assign it to output cell */
-  def feedForward(): Unit = outputs(index) = output()
-  
   /** Memory to save the current bias*/
   var savedBias: Num = bias
 
@@ -39,7 +34,7 @@ class Neuron(index: Int, val inputs: Vec, val outputs: Vec):
   def backtrack(): Unit = 
     bias = savedBias
     var i = 0
-    while i < size do 
+    while i < input.size do 
       weights(i) = savedWeights(i)
       i += 1
   
@@ -47,9 +42,6 @@ class Neuron(index: Int, val inputs: Vec, val outputs: Vec):
   def save(): Unit =
     savedBias = bias
     var i = 0
-    while i < size do 
+    while i < input.size do 
       savedWeights(i) = weights(i)
       i += 1
-
-  /** A string that shows the size of this neuron*/  
-  def show: String = s"Neuron(size=$size)"
