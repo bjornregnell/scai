@@ -7,11 +7,11 @@ object DataSet:
     val source = scala.io.Source.fromFile(file, enc)  // a source can read lines from a file
     val inputs = List.empty[Vec].toBuffer // a buffer is a list that can grow
     val correctOutputs = List.empty[Vec].toBuffer
-    for line <- source.getLines() do
+    for line <- source.getLines() if line.nonEmpty do
       val strings: Array[String] = line.split(":")
-      val is: Vec = strings(0).split(",").map(_.toDouble)
-      val os: Vec = strings(1).split(",").map(_.toDouble)
-      inputs.append(is)
-      correctOutputs.append(os)
+      val x = strings(0).split(",").map(_.toDouble)
+      val y = strings(1).split(",").map(_.toDouble)
+      inputs.append(x)
+      correctOutputs.append(y)
     end for
     new DataSet(file, inputs.toSeq, correctOutputs.toSeq)
