@@ -19,6 +19,7 @@ def test(data: DataSet): Unit =
     val predicted = ai.predict(data.inputs(i))
     val correct = data.correctOutputs(i)
     val loss = meanSquareError(predicted, correct)
+
     val showPredicted = 
       if binaryClassifier(correct(0)) == binaryClassifier(predicted(0)) 
       then showColor(binaryClassifier(predicted(0)), Console.GREEN)
