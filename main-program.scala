@@ -13,7 +13,7 @@ val testData  = DataSet.fromFile("test-data.txt")
 
 val ai = new Network(inputSize = trainData.inputs(0).size, layerSizes = List(3,2,1))
 
-/** Show any text in color in terminal using e.g. the color Console.RED */
+/** Show any text in color in terminal using for example colorCode=Console.RED */
 def showColor(text: String, colorCode: String): String = 
   colorCode + text + Console.RESET
 
