@@ -2,8 +2,8 @@ package scai
 
 class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
 
-  val inputs = new Array[Float](nbrOfInputs)
-  val outputs = new Array[Array[Float]](layerSizes.length)
+  val inputs = new Vec(nbrOfInputs)
+  val outputs = new Array[Vec](layerSizes.length)
   val neurons = new Array[Array[Neuron]](layerSizes.length)
 
   def randomNeuron(): (Int, Int) = 
@@ -16,13 +16,13 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
   
   // allocate neurons in layers
   for layer <- 0 until layerSizes.length do 
-    outputs(layer) = new Array[Float](layerSizes(layer))
+    outputs(layer) = new Vec(layerSizes(layer))
     neurons(layer) = new Array[Neuron](layerSizes(layer))
     for index <- 0 until layerSizes(layer) do 
       if layer == 0 then 
-        neurons(layer)(index) = new Neuron(layer, index, inputs, outputs(layer))
+        neurons(layer)(index) = new Neuron(index, inputs, outputs(layer))
       else
-        neurons(layer)(index) = new Neuron(layer, index, outputs(layer - 1), outputs(layer))
+        neurons(layer)(index) = new Neuron(index, outputs(layer - 1), outputs(layer))
   
   /** Walk through all neurons in all layers and forward outputs to next layer */
   def feedForward() = 
@@ -30,7 +30,7 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
       for index <- 0 until layerSizes(layer) do
         neurons(layer)(index).feedForward()
 
-  def predict(input: Array[Float]): Array[Float] =
+  def predict(input: Vec): Vec =
     assert(input.length == nbrOfInputs, s"in lengths must be $nbrOfInputs") 
     val it = input.iterator
     for i <- inputs.indices do inputs(i) = it.next
@@ -50,45 +50,45 @@ class Network(nbrOfInputs: Int = 2, layerSizes: Seq[Int] = Seq(3,2,1)):
 
     s"$heading\n$body\nOutput: ${outputs(lastLayer).mkString(",")}\n"
 
-  def mutateRandomNeuron(learningFactor: Float): (Int, Int) = 
+  def mutateRandomNeuron(learningFactor: Num): (Int, Int) = 
     val (l, i) = randomNeuron()
     neurons(l)(i).mutate(learningFactor)
     (l, i)
   
 
-  def train(iterations: Int, data: DataSet, learningFactor: Float = 0.3): Unit = 
-    def computeLoss(): Float = 
-      var averageLoss = 0F
+  def train(cycles: Int, data: DataSet, learningFactor: Num = 0.3): Unit = 
+    def computeLoss(): Num = 
+      var averageLoss = 0.0
       var i = 0
       while i < data.size do
-        val loss = meanSquareLoss(predict(data.inputs(i)), data.correctOutputs(i))
+        val loss = meanSquareError(predict(data.inputs(i)), data.correctOutputs(i))
         i += 1
-        averageLoss += (loss - averageLoss)/i // https://en.wikipedia.org/wiki/Moving_average
+        averageLoss = averageLoss + (loss - averageLoss)/i 
       end while
       averageLoss
     end computeLoss
 
-    for epoch <- 1 to iterations do
+    for cycle <- 1 to cycles do
       val loss1 = computeLoss()
       val (l, i) = mutateRandomNeuron(learningFactor)
       val loss2 = computeLoss()
-      if epoch % (iterations / 10) == 0 then 
-        println(s"epoch $epoch loss before mutation: $loss1 --- after mutation: $loss2")
+      if cycle % (cycles / 10) == 0 then 
+        println(s"cycle $cycle loss before mutation: $loss1 --- after mutation: $loss2")
       if loss2 < loss1
       then neurons(l)(i).save() 
       else neurons(l)(i).backtrack()
 
-  def test(data: DataSet): Float =
-    var averageLoss = 0F
+  def test(data: DataSet): Num =
+    var averageLoss = 0.0
     var i = 0
     while i < data.size do
-      val loss = meanSquareLoss(predict(data.inputs(i)), data.correctOutputs(i))
-      def interpret(xs: Array[Float]): String = if xs(0) > 0.5 then "Female" else "Male  "
+      val loss = meanSquareError(predict(data.inputs(i)), data.correctOutputs(i))
+      def interpret(xs: Vec): String = if xs(0) > 0.5 then "Female" else "Male  "
       println(
         s"${data.inputs(i).mkString(",")} " +
         s"correct=${interpret(data.correctOutputs(i))} ${data.correctOutputs(i).mkString(",")}  " +
         s"predicted=${interpret(outputs(lastLayer))}  ${outputs(lastLayer).mkString(",")} loss=$loss") 
       i += 1 
-      averageLoss += (loss - averageLoss)/i // https://en.wikipedia.org/wiki/Moving_average
+      averageLoss = averageLoss + (loss - averageLoss)/i
     end while
     averageLoss

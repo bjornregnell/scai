@@ -1,45 +1,39 @@
 package scai
 
-class Neuron(layer: Int, index: Int, val inputs: Array[Float], val outputs: Array[Float]):
+class Neuron(index: Int, val inputs: Vec, val outputs: Vec):
   def size = inputs.size
 
-  var bias: Float = gauss()
+  var bias: Num = random()
 
-  var weights: Array[Float] = Array.fill(size)(gauss())
+  var weights: Vec = Array.fill(size)(random())
 
   /** Initiate this neuron to a random state. */
   def reset(): Unit =
-    bias = gauss()
+    bias = random()
     var i = 0
     while i < weights.length do 
-      weights(i) = gauss()
+      weights(i) = random()
       i += 1
   
-  /** Adjust the state according to delta. */
-  def adjust(deltaBias: Float, deltaWeights: Array[Float]): Unit =
-    bias += deltaBias
-    var i = 0
-    while i < size do
-      weights(i) += deltaWeights(i)
-      i += 1
-
   /** Randomly adjust the state, scaled by factor. */
-  def mutate(factor: Float): Unit = 
-    bias +=  factor * gauss()
+  def mutate(factor: Num): Unit = 
+    bias +=  factor * random()
     var i = 0
     while i < size do 
-      weights(i) += factor * gauss()
+      weights(i) += factor * random()
       i += 1
 
   /** Compute output value. The sigmoid call constrains output in [0..1] */ 
-  def output(): Float = sigmoid(weights * inputs + bias)
+  def output(): Num = sigmoid(multiply(weights, inputs) + bias)
 
   /** Compute output and assign it to output cell */
   def feedForward(): Unit = outputs(index) = output()
   
-  var savedBias: Float = bias
+  /** Memory to save the current bias*/
+  var savedBias: Num = bias
 
-  var savedWeights: Array[Float] = weights.clone()
+  /** Memory to save the current weights*/
+  var savedWeights: Vec = weights.clone()
   
   /** Forget current state and restore saved state */
   def backtrack(): Unit = 
@@ -56,5 +50,6 @@ class Neuron(layer: Int, index: Int, val inputs: Array[Float], val outputs: Arra
     while i < size do 
       savedWeights(i) = weights(i)
       i += 1
-  
-  def show: String = s"Neuron($layer,$index)=${outputs(index)}"
+
+  /** A string that shows the size of this neuron*/  
+  def show: String = s"Neuron(size=$size)"
