@@ -1,17 +1,17 @@
-class DataSet(name: String, val inputs: Seq[Vec], val correctOutputs: Seq[Vec]):
+class DataSet(val inputs: Array[Vec], val correctOutputs: Array[Vec]):
   def size = inputs.size
-  override def toString = s"DataSet $name size: $size rows, first row length: ${inputs(0).length}]"
+  require(size == correctOutputs.size)
 
 object DataSet:
+  /** Create a data set from file. */
   def fromFile(file: String, enc: String = "UTF-8"): DataSet =
-    val source = scala.io.Source.fromFile(file, enc)  // a source can read lines from a file
-    val inputs = List.empty[Vec].toBuffer // a buffer is a list that can grow
-    val correctOutputs = List.empty[Vec].toBuffer
-    for line <- source.getLines() if line.nonEmpty do
-      val strings: Array[String] = line.split(":")
-      val x = strings(0).split(",").map(_.toDouble)
-      val y = strings(1).split(",").map(_.toDouble)
-      inputs.append(x)
-      correctOutputs.append(y)
-    end for
-    new DataSet(file, inputs.toSeq, correctOutputs.toSeq)
+    val source = scala.io.Source.fromFile(file, enc) 
+    try fromLines(source.getLines().mkString("\n")) finally source.close
+
+  /** Create a data set from a multi-line string.*/
+  def fromLines(multiLineString: String): DataSet =
+    val lines = multiLineString.trim.split("\n")
+    val pairs = lines.map(_.split(":"))
+    val inputs: Array[Vec]  = pairs.map(p => p(0).split(",").map(_.toDouble))
+    val correct: Array[Vec] = pairs.map(p => p(1).split(",").map(_.toDouble))
+    new DataSet(inputs, correct)
