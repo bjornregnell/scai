@@ -8,12 +8,16 @@ This AI has 6 neurons with in total 20 parameters that are adjusted during train
 
 # How to run
 
-Install Scala from here: https://www.scala-lang.org/download/
+You can run this code **online** here: https://scastie.scala-lang.org/vVvDotCzRUyyAWg5lec9Jg
 
-Download this [zip-file](https://github.com/bjornregnell/scai/archive/refs/heads/main.zip) and unpack it. 
+Or you can run it **locally** on your own machine as follows:
 
-[Open a terminal](https://www.youtube.com/results?search_query=how+to+open+terminal) and navigate to the folder where you unpacked the zip-file and type this command and press Enter:
+* Install Scala from here: https://www.scala-lang.org/download/
 
-```
-scala-cli run .
-```
+* Download this [zip-file](https://github.com/bjornregnell/scai/archive/refs/heads/main.zip) and unpack it. 
+
+* [Open a terminal](https://www.youtube.com/results?search_query=how+to+open+terminal) and navigate to the folder where you unpacked the zip-file and type this command and press Enter:
+
+  ```
+  scala-cli run .
+  ```
