@@ -4,7 +4,8 @@ Have you ever wondered how AI works?
 
 Here you find an example of a very simple AI in the form of a small neural network implemented in the beginner-friendly Scala programming language. 
 
-This AI has 6 neurons with in total 20 parameters that are adjusted during training. ChatGPT has more than 100 miljon parameters and is trained on big data from the internet...
+* This AI has 6 neurons with in total 20 parameters that are adjusted during training on 4 data points. 
+* A smart AI such as ChatGPT has more than 100 miljon parameters and is trained on really big data...
 
 # How to run
 
