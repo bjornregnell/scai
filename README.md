@@ -17,7 +17,7 @@ Or you can run it **locally** on your own machine as follows:
 
 * Download this [zip-file](https://github.com/bjornregnell/scai/archive/refs/heads/main.zip) and unpack it. 
 
-* [Open a terminal](https://www.youtube.com/results?search_query=how+to+open+terminal) and navigate to the folder where you unpacked the zip-file and type this command and press Enter:
+* [Open a terminal](https://www.youtube.com/results?search_query=how+to+open+terminal) and navigate to the folder where you unpacked the zip-file and run this command:
 
   ```
   scala-cli run .
