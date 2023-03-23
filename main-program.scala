@@ -21,7 +21,7 @@ def test(data: DataSet): Unit =
   for i <- data.inputs.indices do
     val predicted = ai.predict(data.inputs(i))
     val correct = data.correctOutputs(i)
-    val loss = meanSquareError(predicted, correct)
+    val error = meanSquareError(predicted, correct)
 
     val predictedSex = binaryClassifier(predicted(0))
     val correctSex   = binaryClassifier(correct(0))
@@ -34,7 +34,7 @@ def test(data: DataSet): Unit =
     println(
       s"${data.inputs(i).mkString(",")} " +
       s"correct=${binaryClassifier(correct(0))} ${correct.mkString(",")}  " +
-      s"predicted=$showPredicted  ${predicted.mkString(",")} loss=$loss") 
+      s"predicted=$showPredicted  ${predicted.mkString(",")} error=$error") 
 
 /** The main program. Run it in terminal with `scala-cli run .` */
 @main def run = 
