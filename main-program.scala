@@ -49,3 +49,4 @@ object mainProgram:
     println(s"\n--- TESTING")
     test(testData)
 
+end mainProgram

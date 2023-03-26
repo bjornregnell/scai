@@ -29,3 +29,5 @@ object mathematics:
 
   /** A random number with normal distribution, mean 0, standard deviation 1 **/ 
   def random(): Num = RNG.nextGaussian()
+
+end mathematics
