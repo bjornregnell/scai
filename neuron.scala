@@ -1,3 +1,6 @@
+import mathematics.* 
+
+/** A simple model of a brain cell. */
 class Neuron(val input: Vec):
   var bias: Num = random()
   var weights: Vec = Array.fill(input.size)(random())
@@ -14,18 +17,18 @@ class Neuron(val input: Vec):
     for i <- weights.indices do 
       weights(i) = weights(i) + factor * random()
 
-  /** Compute output value. The sigmoid call constrains output in [0..1] */ 
+  /** Compute output value. The sigmoid constrains output within [0..1]. */ 
   def output(): Num = 
     val x = multiply(weights, input) + bias 
     sigmoid(x)
 
-  /** Memory for saving the current bias*/
+  /** Memory for saving the current bias. */
   var savedBias: Num = bias
 
-  /** Memory for saving the current weights*/
+  /** Memory for saving the current weights. */
   var savedWeights: Vec = weights.clone()
   
-  /** Forget current state and restore saved state */
+  /** Forget current state and restore saved state. */
   def backtrack(): Unit = 
     bias = savedBias
     for i <- weights.indices do 
@@ -37,5 +40,6 @@ class Neuron(val input: Vec):
     for i <- weights.indices do 
       savedWeights(i) = weights(i)
   
+  /** A text showing the input size of this neuron. */
   def show: String = s"Neuron[input.size=${input.size}]"
 end Neuron
