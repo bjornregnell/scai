@@ -17,25 +17,27 @@ object mainProgram:
   val ai = new Network(inputSize = trainData.inputs(0).size, layerSizes = List(3,2,1))
 
   /** Show any text in color in terminal using for example colorCode=Console.RED */
-  def showColor(text: String, colorCode: String): String = 
-    colorCode + text + Console.RESET
+  def showColor(s: String, colorCode: String): String = colorCode + s + Console.RESET
 
   /** Use data to test our ai. A loss close to zero represents high certainty. **/
   def test(data: DataSet): Unit =
     for i <- data.inputs.indices do
       val predicted = ai.predict(data.inputs(i))
       val correct = data.correctOutputs(i)
-      val loss = meanSquaredError(predicted, correct)
+      val error = meanSquaredError(predicted, correct)
 
+      val predictedSex = binaryClassifier(predicted(0))
+      val correctSex   = binaryClassifier(correct(0))
+      
       val showPredicted = 
-        if binaryClassifier(correct(0)) == binaryClassifier(predicted(0)) 
-        then showColor(binaryClassifier(predicted(0)), Console.GREEN)
-        else showColor(binaryClassifier(predicted(0)), Console.RED)
+        if predictedSex == correctSex 
+        then showColor(predictedSex, Console.GREEN)
+        else showColor(predictedSex, Console.RED)
 
       println(
         s"${data.inputs(i).mkString(",")} " +
         s"correct=${binaryClassifier(correct(0))} ${correct.mkString(",")}  " +
-        s"predicted=$showPredicted  ${predicted.mkString(",")} loss=$loss") 
+        s"predicted=$showPredicted  ${predicted.mkString(",")} error=$error") 
 
   /** The main program. Click 'run' or type `scala-cli run .` in terminal. */
   @main def run = 

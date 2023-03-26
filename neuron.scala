@@ -5,12 +5,6 @@ class Neuron(val input: Vec):
   var bias: Num = random()
   var weights: Vec = Array.fill(input.size)(random())
 
-  /** Initiate this neuron to a random state. */
-  def reset(): Unit =
-    bias = random()
-    for i <- weights.indices do 
-      weights(i) = random()
-  
   /** Randomly adjust the state, scaled by factor. */
   def mutate(factor: Num): Unit = 
     bias = bias + factor * random()
