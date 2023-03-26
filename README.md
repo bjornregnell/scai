@@ -9,7 +9,7 @@ Here you find an example of a very simple AI in the form of a small neural netwo
 
 # How to run
 
-You can run this code **online** here: https://scastie.scala-lang.org/vVvDotCzRUyyAWg5lec9Jg
+You can run this code **online** here: https://scastie.scala-lang.org/0aP64Oe4QAu7XIXeD7AibA
 
 Or you can run it **locally** on your own machine as follows:
 
