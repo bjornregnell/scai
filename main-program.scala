@@ -36,7 +36,7 @@ object mainProgram:
 
       println(
         s"${data.inputs(i).mkString(",")} " +
-        s"correct=${binaryClassifier(correct(0))} ${correct.mkString(",")}  " +
+        s"correct=$correctSex ${correct.mkString(",")}  " +
         s"predicted=$showPredicted  ${predicted.mkString(",")} error=$error") 
 
   /** The main program. Click 'run' or type `scala-cli run .` in terminal. */
