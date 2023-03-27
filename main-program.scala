@@ -37,14 +37,14 @@ object mainProgram:
       println(
         s"${data.inputs(i).mkString(",")} " +
         s"correct=$correctSex ${correct.mkString(",")}  " +
-        s"predicted=$showPredicted  ${predicted.mkString(",")} error=$error") 
+        f"predicted=$showPredicted  ${predicted(0)}%1.10f") 
 
   /** The main program. Click 'run' or type `scala-cli run .` in terminal. */
   @main def run = 
-    println(s"\n--- $welcomeMessage\n")
+    println(s"\n====  $welcomeMessage  ====\n")
     println(ai.show)
     val n = 600
-    println(s"\n--- TRAINING in $n cycles")
+    println(s"\n--- TRAINING in $n steps")
     ai.train(steps = n,  data = trainData)
     println(s"\n--- TESTING")
     test(testData)
