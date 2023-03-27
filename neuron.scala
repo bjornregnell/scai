@@ -31,5 +31,5 @@ class Neuron(val input: Vec):
     for i <- weights.indices do 
       savedWeights(i) = weights(i)
   
-  def show: String = s"Neuron[input.size=${input.size}]"
+  def show: String = s"Neuron[inputs=${input.size}]"
 end Neuron
