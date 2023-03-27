@@ -1,10 +1,11 @@
-/** A Layer consists of many Neurons */
-type Layer = Array[Neuron]
+import mathematics.* 
 
-/** A simple model of a brain with several neurons in several layers. */
+/** A simple model of a brain with neurons in layers. */
 class Network(val inputSize: Int, val layerSizes: List[Int]):
   val input   = new Vec(inputSize)
   val outputs = new Array[Vec](layerSizes.length)
+
+  type Layer = Array[Neuron]
   val neurons = new Array[Layer](layerSizes.length)
   val lastLayer = layerSizes.length - 1
   
@@ -20,7 +21,7 @@ class Network(val inputSize: Int, val layerSizes: List[Int]):
         neurons(layer)(index) = new Neuron(outputs(layer - 1))
   
   /** Walk through all neurons in all layers and forward outputs to next layer */
-  def feedForward() = 
+  def feedForward(): Unit = 
     for layer <- layerSizes.indices do
       for index <- outputs(layer).indices do
         outputs(layer)(index) = neurons(layer)(index).output()
@@ -43,26 +44,26 @@ class Network(val inputSize: Int, val layerSizes: List[Int]):
     neurons(l)(i).mutate(learningFactor)
     (l, i)
   
-  /** Run training cycles using data. The learningFactor controls the size of mutations.*/
-  def train(cycles: Int, data: DataSet, learningFactor: Num = 0.3): Unit = 
-    def computeLoss(): Num = 
-      var averageLoss = 0.0
+  /** Run training steps using data. The learningFactor controls the size of mutations.*/
+  def train(steps: Int, data: DataSet, learningFactor: Num = 0.3): Unit = 
+    def computeError(): Num = 
+      var averageError = 0.0
       var i = 0
       while i < data.size do
-        val loss = meanSquareError(predict(data.inputs(i)), data.correctOutputs(i))
+        val loss = meanSquaredError(predict(data.inputs(i)), data.correctOutputs(i))
         i += 1
-        averageLoss = averageLoss + (loss - averageLoss)/i 
+        averageError = averageError + (loss - averageError)/i 
       end while
-      averageLoss
-    end computeLoss
+      averageError
+    end computeError
 
-    for cycle <- 1 to cycles do
-      val loss1 = computeLoss()
+    for step <- 1 to steps do
+      val err1 = computeError()
       val (l, i) = mutateRandomNeuron(learningFactor)
-      val loss2 = computeLoss()
-      if cycle % (cycles / 10) == 0 then 
-        println(f"cycle $cycle%3d; error before mutation: $loss1%1.7f - after: $loss2%1.7f")
-      if loss2 < loss1
+      val err2 = computeError()
+      if step % (steps / 10) == 0 then 
+        println(f"step $step%3d; error before mutation: $err1%1.7f - after: $err2%1.7f")
+      if err2 < err1
       then neurons(l)(i).save() 
       else neurons(l)(i).backtrack()
   end train
@@ -79,3 +80,5 @@ class Network(val inputSize: Int, val layerSizes: List[Int]):
           ).mkString(", ")
       ).mkString("\n")
     s"$heading\n$body"
+  
+end Network

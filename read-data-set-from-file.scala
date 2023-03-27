@@ -1,3 +1,5 @@
+import mathematics.* 
+
 class DataSet(val inputs: Array[Vec], val correctOutputs: Array[Vec]):
   def size = inputs.size
   require(size == correctOutputs.size)
