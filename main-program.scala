@@ -44,8 +44,10 @@ object mainProgram:
     println(s"\n====  $welcomeMessage  ====\n")
     println(ai.show)
     val n = 600
+
     println(s"\n--- TRAINING in $n steps")
     ai.train(steps = n,  data = trainData)
+    
     println(s"\n--- TESTING")
     test(testData)
 
