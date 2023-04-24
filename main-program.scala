@@ -19,7 +19,7 @@ object mainProgram:
   /** Show any text in color in terminal using for example colorCode=Console.RED */
   def showColor(s: String, colorCode: String): String = colorCode + s + Console.RESET
 
-  /** Use data to test our ai. A error close to zero represents high certainty. **/
+  /** Use data to test our ai. An error close to zero represents high certainty. **/
   def test(data: DataSet): Unit =
     for i <- data.inputs.indices do
       val predicted = ai.predict(data.inputs(i))
