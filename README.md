@@ -15,7 +15,7 @@ You can run this code **online** here: https://scastie.scala-lang.org/UN0hBkX2RM
 
 Or you can run it **locally** on your own machine as follows:
 
-* Install Scala from here: https://www.scala-lang.org/download/
+* Install Scala CLI from here: [https://www.scala-lang.org/download/](https://scala-cli.virtuslab.org/install)
 
 * Download this [zip-file](https://github.com/bjornregnell/scai/archive/refs/heads/main.zip) and unpack it. 
 
