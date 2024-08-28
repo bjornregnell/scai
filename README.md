@@ -15,12 +15,12 @@ You can run this code **online** here: https://scastie.scala-lang.org/vnHtP7njT3
 
 Or you can run it **locally** on your own machine as follows:
 
-* Install Scala from here: https://www.scala-lang.org/download/
+* Install latest Scala (>3.5) from here: https://www.scala-lang.org/download/
 
 * Download this [zip-file](https://github.com/bjornregnell/scai/archive/refs/heads/main.zip) and unpack it. 
 
 * [Open a terminal](https://www.youtube.com/results?search_query=how+to+open+terminal) and navigate to the folder where you unpacked the zip-file and run this command:
 
   ```
-  scala-cli run .
+  scala run .
   ```
