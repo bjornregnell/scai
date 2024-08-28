@@ -1,4 +1,4 @@
-//> using scala "3.2.2"
+//> using scala "3.5.0"
 
 object mainProgram:
   val welcomeMessage = "Welcome to AI SEX CLASSIFIER"
