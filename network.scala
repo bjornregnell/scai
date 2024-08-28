@@ -62,7 +62,7 @@ class Network(val inputSize: Int, val layerSizes: List[Int]):
       val (l, i) = mutateRandomNeuron(learningFactor)
       val err2 = computeError()
       if step % (steps / 10) == 0 then 
-        println(s"step $step loss before mutation: $err1 --- after mutation: $err2")
+        println(f"step $step%3d; error before mutation: $err1%1.7f - after: $err2%1.7f")
       if err2 < err1
       then neurons(l)(i).save() 
       else neurons(l)(i).backtrack()
@@ -70,7 +70,7 @@ class Network(val inputSize: Int, val layerSizes: List[Int]):
   
   /** Show this network with its neurons in each layer */
   def show: String = 
-    val heading = s"Neural Network [inputSize=$inputSize, layerSizes=$layerSizes]"
+    val heading = s"Neural Network [inputs=$inputSize, layers=$layerSizes]"
     var body = 
       (
         for layer <- 0 until layerSizes.length yield

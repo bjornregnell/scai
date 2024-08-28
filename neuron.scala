@@ -34,6 +34,5 @@ class Neuron(val input: Vec):
     for i <- weights.indices do 
       savedWeights(i) = weights(i)
   
-  /** A text showing the input size of this neuron. */
-  def show: String = s"Neuron[input.size=${input.size}]"
+  def show: String = s"Neuron[inputs=${input.size}]"
 end Neuron
