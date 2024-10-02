@@ -9,7 +9,7 @@ Here you find an example of a very simple AI in the form of a small neural netwo
 
 See also slides from my talk here: https://github.com/bjornregnell/AI-taking-over 
 
-# How to run
+## How to run
 
 You can run this code **online** here: https://scastie.scala-lang.org/UN0hBkX2RMeHsle1DYLw0Q
 
@@ -24,3 +24,9 @@ Or you can run it **locally** on your own machine as follows:
   ```
   scala run .
   ```
+
+## Prototype network visualization
+
+This prototype web app visualizes the network: https://eryndir.github.io/vscAi/ 
+
+The prototype visualization code is available here: https://github.com/Eryndir/vscAi
