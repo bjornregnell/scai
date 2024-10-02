@@ -1,7 +1,7 @@
 import mathematics.* 
 
 /** A simple model of a brain with neurons in layers. */
-class Network(val inputSize: Int, val layerSizes: List[Int]):
+class Network(val inputSize: Int, val layerSizes: Array[Int]):
   val input   = new Vec(inputSize)
   val outputs = new Array[Vec](layerSizes.length)
 
