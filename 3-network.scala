@@ -70,7 +70,7 @@ class Network(val inputSize: Int, val layerSizes: List[Int]):
   
   /** Show this network with its neurons in each layer */
   def show: String = 
-    val heading = s"Neural Network [inputs=$inputSize, layers=$layerSizes]"
+    val heading = s"Neural Network [$inputSize inputs, layer sizes: ${layerSizes.mkString(",")}]"
     var body = 
       (
         for layer <- 0 until layerSizes.length yield
