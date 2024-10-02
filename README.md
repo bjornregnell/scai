@@ -11,7 +11,7 @@ See also slides from my talk here: https://github.com/bjornregnell/AI-taking-ove
 
 ## How to run
 
-You can run this code **online** here: https://scastie.scala-lang.org/Xu8x17upTbCkTvwAoufY2w
+You can run this code **online** here: https://scastie.scala-lang.org/AMRk3JkJQuaFAij6uJ4InQ
 
 Or you can run it **locally** on your own machine as follows:
 
