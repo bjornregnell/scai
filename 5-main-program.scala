@@ -39,7 +39,7 @@ object mainProgram:
         s"correct=$correctSex ${correct.mkString(",")}  " +
         f"predicted=$showPredicted  ${predicted(0)}%1.10f") 
 
-  /** The main program. Click 'run' or type `scala-cli run .` in terminal. */
+  /** The main program. Click 'run' or type `scala run .` in terminal. */
   @main def run = 
     println(s"\n====  $welcomeMessage  ====\n")
     println(ai.show)
