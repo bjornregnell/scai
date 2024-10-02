@@ -14,7 +14,7 @@ object mainProgram:
   val trainData = DataSet.fromFile("train-data.txt")
   val testData  = DataSet.fromFile("test-data.txt")
 
-  val ai = new Network(inputSize = trainData.inputs(0).size, layerSizes = Array(3,2,1))
+  val ai = new Network(inputSize = trainData.inputs(0).size, layerSizes = IArray(3,2,1))
 
   /** Show any text in color in terminal using for example colorCode=Console.RED */
   def showColor(s: String, colorCode: String): String = colorCode + s + Console.RESET
