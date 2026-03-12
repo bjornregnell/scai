@@ -22,5 +22,5 @@ Or you can run it **locally** on your own machine as follows:
 * [Open a terminal](https://www.youtube.com/results?search_query=how+to+open+terminal) and navigate to the folder where you unpacked the zip-file and run this command:
 
   ```
-  scala run .
+  scala-cli run .
   ```
