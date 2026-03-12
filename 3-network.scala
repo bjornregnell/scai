@@ -1,7 +1,7 @@
 import mathematics.* 
 
 /** A simple model of a brain with neurons in layers. */
-class Network(val inputSize: Int, val layerSizes: List[Int]):
+class Network(val inputSize: Int, val layerSizes: IArray[Int]):
   val input   = new Vec(inputSize)
   val outputs = new Array[Vec](layerSizes.length)
 
@@ -70,7 +70,7 @@ class Network(val inputSize: Int, val layerSizes: List[Int]):
   
   /** Show this network with its neurons in each layer */
   def show: String = 
-    val heading = s"Neural Network [inputs=$inputSize, layers=$layerSizes]"
+    val heading = s"Neural Network [$inputSize inputs, layer sizes: ${layerSizes.mkString(",")}]"
     var body = 
       (
         for layer <- 0 until layerSizes.length yield
